@@ -39,13 +39,7 @@ src/test/java      Tests
 
 ### Run the Application
 
-1. Configure your database connection with environment variables:
-
-```bash
-export DB_URL="jdbc:mysql://localhost:3306/wkprognose?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
-export DB_USERNAME="root"
-export DB_PASSWORD="your-password"
-```
+1. Configure your MySQL connection in `src/main/resources/application.properties`.
 
 2. Start the application:
 
@@ -58,12 +52,12 @@ export DB_PASSWORD="your-password"
 ## Database
 
 The application is configured for MySQL and includes SQL seed data through `src/main/resources/data.sql`.
-Database credentials are read from `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD` so sensitive values do not need to be committed.
+Update the datasource settings in `src/main/resources/application.properties` to match your local database setup.
 
 ## Notes
 
 - `target/` and IDE files are already ignored through `.gitignore`.
-- `src/main/resources/application.properties` is set up to use environment variables instead of hardcoded secrets.
+- Review `src/main/resources/application.properties` before publishing or sharing the project.
 
 ## License
 
