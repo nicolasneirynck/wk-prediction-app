@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{app.title}"></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('manage-matches')}"></aside>
+
+  <main class="page">
+    <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+    <section class="content">
+      <section class="page-header manage-matches-header">
+        <div class="page-header-text">
+          <h1 class="page-title">Manage Matches</h1>
+          <p class="page-subtitle">Create, edit matches and enter results</p>
+        </div>
+
+        <div class="page-header-actions">
+          <a class="add-match-button" th:href="@{/matches/add}">+ Add Match</a>
+        </div>
+      </section>
+
+      <section class="manage-match-list">
+        <div class="success-message" th:if="${successMessageKey}" th:text="#{${successMessageKey}}"></div>
+
+        <article class="manage-match-card" th:each="match : ${matches}">
+          <div class="manage-match-main">
+            <div class="match-card-main">
+              <div class="match-team">
+                <span class="match-flag fi" th:classappend="' fi-' + ${match.homeCountryCode}"></span>
+                <span class="match-country" th:text="${match.homeCountry}">Mexico</span>
+              </div>
+
+              <div class="match-center">
+                <span class="match-score"
+                      th:if="${match.finalHomeScore != null and match.finalAwayScore != null}"
+                      th:text="${match.finalHomeScore + ' - ' + match.finalAwayScore}">2 - 1</span>
+                <span class="match-versus"
+                      th:unless="${match.finalHomeScore != null and match.finalAwayScore != null}">vs</span>
+              </div>
+
+              <div class="match-team">
+                <span class="match-flag fi" th:classappend="' fi-' + ${match.awayCountryCode}"></span>
+                <span class="match-country" th:text="${match.awayCountry}">Canada</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="manage-match-center">
+            <div class="manage-match-meta">
+              <span class="manage-match-status"
+                    th:classappend="${match.matchStatus.name() == 'COMPLETED'} ? ' manage-match-status-completed' :
+                      (${match.matchStatus.name() == 'AWAITING_RESULT'} ? ' manage-match-status-awaiting' : ' manage-match-status-upcoming')"
+                    th:text="${match.matchStatus.name() == 'COMPLETED' ? 'Completed' :
+                      (match.matchStatus.name() == 'AWAITING_RESULT' ? 'Awaiting result' : 'Upcoming')}">Upcoming</span>
+            </div>
+          </div>
+
+          <div class="manage-match-actions">
+            <a class="manage-match-edit-button" th:href="@{/matches/edit/{id}(id=${match.id})}">Edit</a>
+          </div>
+        </article>
+      </section>
+    </section>
+  </main>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Team</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('teams')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Join Team</h1>
+                <p class="page-subtitle">Enter an invite code to join an existing team.</p>
+            </section>
+
+            <section class="join-team-card team-form-card">
+                <form class="join-team-form team-form" th:object="${joinTeamDTO}" th:action="@{/teams/join}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="inviteCode">Invite code</label>
+                        <input class="form-input" th:field="*{inviteCode}" type="text" id="inviteCode" placeholder="Enter invite code">
+                        <p class="form-help">Ask your team owner for the invite code.</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="form-button" type="submit">Join Team</button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

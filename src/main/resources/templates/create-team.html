@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Team</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('teams')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Create Team</h1>
+                <p class="page-subtitle">Choose a name for your team to get started.</p>
+            </section>
+
+            <section class="team-form-card">
+                <form class="team-form" th:object="${createTeamDTO}" th:action="@{/teams/create}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Team name</label>
+                        <input class="form-input" th:field="*{name}" id="name" type="text" placeholder="Enter your team name">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="form-button" type="submit">Create Team</button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

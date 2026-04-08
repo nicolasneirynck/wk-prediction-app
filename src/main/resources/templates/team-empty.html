@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Team</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('team')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">My Team</h1>
+                <p class="page-subtitle">Create or join a team to compete</p>
+            </section>
+
+            <section class="team-empty-state">
+                <h2 class="team-empty-title">No team yet - time to assemble!</h2>
+                <p class="team-empty-description">Create your own team or join one with an invite code.</p>
+
+                <div class="team-empty-actions">
+                    <a class="team-empty-button team-empty-button-primary" th:href="@{/teams/create}">+ Create Team</a>
+                    <a class="team-empty-button team-empty-button-secondary" th:href="@{/teams/join}">Join Team</a>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

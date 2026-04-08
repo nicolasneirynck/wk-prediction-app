@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Match</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('')}"></aside>
+
+  <main class="page">
+    <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+    <section class="content">
+      <a class="back-link" th:href="@{/matches/manage}">Back to Manage Matches</a>
+      <section class="page-header">
+        <h1 class="page-title">Edit Match</h1>
+        <p class="page-subtitle">Create a new match with teams, schedule and stadium details.</p>
+      </section>
+
+      <section class="team-form-card add-match-card">
+        <div th:replace="~{fragments/match-form :: matchForm}"></div>
+      </section>
+
+    </section>
+  </main>
+</div>
+</body>
+</html>

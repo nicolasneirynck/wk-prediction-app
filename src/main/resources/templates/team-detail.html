@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{app.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('team')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title" th:text="${teamDetailDTO.name}"></h1>
+
+                <section class="invite-code-card">
+                    <div class="invite-code-content">
+                        <p class="invite-code-label">Invite Code</p>
+                        <p class="team-invite-code" th:text="${teamDetailDTO.inviteCode}">GOAL2026</p>
+                    </div>
+
+                    <div class="invite-code-actions">
+                        <form th:action="@{/teams/{id}/regenerate-invite-code(id=${teamDetailDTO.id})}" method="post">
+                            <button class="invite-code-regenerate-button" type="submit" aria-label="Regenerate invite code">
+                                Regenerate
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </section>
+
+<!--            <section class="team-stats">-->
+<!--                <article class="team-stat-card">-->
+<!--                    <p class="team-stat-label">Members</p>-->
+<!--                    <p class="team-stat-value" th:text="${teamDetailDTO.memberCount}">4</p>-->
+<!--                </article>-->
+
+<!--                <article class="team-stat-card">-->
+<!--                    <p class="team-stat-label">Team score</p>-->
+<!--                    <p class="team-stat-value" th:text="${teamDetailDTO.totalScore}">128</p>-->
+<!--                </article>-->
+<!--            </section>-->
+
+            <section class="member-section">
+                <h2 class="section-title">Team Members</h2>
+                <section class="member-list">
+                    <article class="member-card" th:each="member : ${teamDetailDTO.members}">
+                        <div class="member-card-main">
+                            <div class="member-info">
+                                <p class="member-name" th:text="${member.name}">Alice Johnson</p>
+                                <span class="member-owner-badge" th:if="${member.owner}">Owner</span>
+                            </div>
+
+<!--                            <div class="member-score">-->
+<!--                                <p class="member-meta-label">Score</p>-->
+<!--                                <p class="member-meta-value" th:text="${member.score}"></p>-->
+<!--                            </div>-->
+
+<!--                            <div class="member-ranking">-->
+<!--                                <p class="member-meta-label">Ranking</p>-->
+<!--                                <p class="member-meta-value" th:text="${member.ranking}"></p>-->
+<!--                            </div>-->
+                        </div>
+
+                        <form th:action="@{/teams/{teamId}/members/{memberId}/remove(teamId=${teamDetailDTO.id},memberId=${member.id})}"
+                              th:if="${!member.owner}"
+                              method="post">
+                            <div class="member-card-actions">
+                                <button class="member-remove-button" type="submit">Remove</button>
+                            </div>
+                        </form>
+                    </article>
+                </section>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+
+</html>

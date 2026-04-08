@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside class="sidebar" th:fragment="sidebar(activePage)">
+    <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a class="sidebar-link"
+                   th:classappend="${activePage == 'home'} ? ' sidebar-link-active' : ''"
+                   th:href="@{/}">Home</a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link"
+                   th:classappend="${activePage == 'team'} ? ' sidebar-link-active' : ''"
+                   th:href="@{${myTeamLink}}">My Team</a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="#">Predictions</a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="#">Ranking</a>
+            </li>
+            <li class="sidebar-section-label">Admin</li>
+            <li class="sidebar-item">
+                <a class="sidebar-link"
+                   th:classappend="${activePage == 'manage-matches'} ? ' sidebar-link-active' : ''"
+                   th:href="@{/matches/manage}">Manage Matches</a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+<header class="topbar" th:fragment="topbar(username)">
+    <div class="topbar-user">
+        <span class="topbar-username" th:text="${username}">Nicolas Neirynck</span>
+    </div>
+</header>
+</body>
+</html>

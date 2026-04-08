@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{app.title}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('home')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Matches</h1>
+                <p class="page-subtitle">All FIFA World Cup 2026 matches</p>
+            </section>
+
+            <section class="match-list">
+                <a class="match-card" th:each="match : ${matches}" th:href="@{/matches/{id}(id=${match.id})}">
+                        <div class="match-card-main">
+                            <div class="match-team">
+                                <span class="match-flag fi" th:classappend="' fi-' + ${match.homeCountryCode}"></span>
+                                <span class="match-country" th:text="${match.homeCountry}"></span>
+                            </div>
+
+                            <div class="match-center">
+                                <span class="match-score"
+                                      th:if="${match.finalHomeScore != null and match.finalAwayScore != null}"
+                                      th:text="${match.finalHomeScore + ' - ' + match.finalAwayScore}">2 - 1</span>
+                                <span class="match-versus"
+                                      th:unless="${match.finalHomeScore != null and match.finalAwayScore != null}">vs</span>
+                                <span class="match-group" th:text="${match.matchStage}"></span>
+                            </div>
+
+                            <div class="match-team">
+                                <span class="match-flag fi" th:classappend="' fi-' + ${match.awayCountryCode}"></span>
+                                <span class="match-country" th:text="${match.awayCountry}"></span>
+                            </div>
+                        </div>
+
+                        <div class="match-card-meta">
+                            <p class="match-datetime" th:with="df=#{date.format.pattern},
+            formattedDate=${#temporals.format(match.matchDateTime, df)}"
+                               th:text="${#strings.capitalize(formattedDate)}"></p>
+                            <p class="match-stadium" th:text="${match.stadiumName}"></p>
+                            <p class="match-location" th:text="${match.city + ', ' + match.hostCountry}"></p>
+                        </div>
+                </a>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+
+</html>

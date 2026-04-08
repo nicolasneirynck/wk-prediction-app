@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<section th:fragment="matchForm">
+  <form class="team-form" th:object="${inputMatchDTO}" th:action="${formAction}" method="post">
+    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="homeCountry">Country A</label>
+        <select class="form-input" th:field="*{homeCountry}" id="homeCountry">
+          <option value="">Select a country</option>
+          <option th:each="country : ${T(com.example.wk_prognose.util.Country).values()}"
+                  th:value="${country}"
+                  th:text="${country}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('homeCountry')}"
+              th:errorclass="error" th:errors="*{homeCountry}"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="awayCountry">Country B</label>
+        <select class="form-input" id="awayCountry" th:field="*{awayCountry}">
+          <option value="">Select a country</option>
+          <option th:each="country : ${T(com.example.wk_prognose.util.Country).values()}"
+                  th:value="${country}"
+                  th:text="${country}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('awayCountry')}"
+              th:errorclass="error" th:errors="*{awayCountry}"></span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="matchStage">Match stage</label>
+        <select class="form-input" id="matchStage" th:field="*{matchStage}">
+          <option value="">Select a stage</option>
+          <option th:each="stage : ${T(com.example.wk_prognose.util.MatchStage).values()}"
+                  th:value="${stage.name()}"
+                  th:text="${stage}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('matchStage')}"
+              th:errorclass="error" th:errors="*{matchStage}"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="matchDateTime">Date and time</label>
+        <input class="form-input" type="datetime-local" id="matchDateTime" th:field="*{matchDateTime}">
+        <span th:if="${#fields.hasErrors('matchDateTime')}"
+              th:errorclass="error" th:errors="*{matchDateTime}"></span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="locationId">Location</label>
+        <select class="form-input" id="locationId" th:field="*{locationId}">
+          <option value="">Select a location</option>
+          <option th:each="location : ${locations}"
+                  th:value="${location.id}"
+                  th:text="${location.country + ' - ' + location.city + ' - ' + location.stadiumName}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('locationId')}"
+              th:errorclass="error" th:errors="*{locationId}"></span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="stadiumCode">Stadium code</label>
+        <input class="form-input" type="text" id="stadiumCode" th:field="*{stadiumCode}" placeholder="Enter stadium code">
+        <span th:if="${#fields.hasErrors('stadiumCode')}"
+              th:errorclass="error" th:errors="*{stadiumCode}"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="checksum">Checksum</label>
+        <input class="form-input" type="text" id="checksum" th:field="*{checksum}" placeholder="Enter checksum">
+        <span th:if="${#fields.hasErrors('checksum')}"
+              th:errorclass="error" th:errors="*{checksum}"></span>
+      </div>
+    </div>
+
+    <div class="form-row" th:if="${showScoreInputs}">
+      <div class="form-group">
+        <label class="form-label" for="homeScore">Home score</label>
+        <input class="form-input" type="number" min="0" id="homeScore" th:field="*{homeScore}" placeholder="Enter home score">
+        <span th:if="${#fields.hasErrors('homeScore')}"
+              th:errorclass="error" th:errors="*{homeScore}"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="awayScore">Away score</label>
+        <input class="form-input" type="number" min="0" id="awayScore" th:field="*{awayScore}" placeholder="Enter away score">
+        <span th:if="${#fields.hasErrors('awayScore')}"
+              th:errorclass="error" th:errors="*{awayScore}"></span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="form-button" type="submit" th:text="${submitLabel}">Save Match</button>
+    </div>
+  </form>
+</section>
+</body>
+</html>
