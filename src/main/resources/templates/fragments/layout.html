@@ -15,10 +15,14 @@
                    th:href="@{${myTeamLink}}">My Team</a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">Predictions</a>
+                <a class="sidebar-link"
+                   th:classappend="${activePage == 'predictions'} ? ' sidebar-link-active' : ''"
+                   th:href="@{/predictions}">Predictions</a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">Ranking</a>
+                <a class="sidebar-link"
+                   th:classappend="${activePage == 'ranking'} ? ' sidebar-link-active' : ''"
+                   th:href="@{/teams/ranking}">Top-10 Teams</a>
             </li>
             <li class="sidebar-section-label">Admin</li>
             <li class="sidebar-item">

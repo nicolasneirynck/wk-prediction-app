@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{app.title}"></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('predictions')}"></aside>
+
+  <main class="page">
+    <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+    <section class="content">
+      <section class="page-header">
+        <h1 class="page-title">Predictions</h1>
+        <p class="page-subtitle">View your upcoming picks and past results.</p>
+      </section>
+
+      <div class="success-message" th:if="${successMessageKey}" th:text="#{${successMessageKey}}"></div>
+
+      <section class="points-summary">
+        <article class="points-summary-card">
+          <p class="points-summary-label">Total points</p>
+          <p class="points-summary-value" th:text="${totalPoints}">24</p>
+        </article>
+      </section>
+
+      <section class="upcoming-section">
+        <h2 class="section-title">Upcoming Predictions</h2>
+        <section class="prediction-list">
+          <a class="prediction-card prediction-card-upcoming"
+             th:each="prediction : ${upcomingPredictions}"
+             th:href="@{/matches/{id}(id=${prediction.matchId})}">
+            <div class="prediction-upcoming-line">
+              <div class="prediction-match-row">
+                <div class="prediction-team">
+                  <span class="prediction-flag fi" th:classappend="' fi-' + ${prediction.homeCountryCode}"></span>
+                  <span class="prediction-team-name" th:text="${prediction.homeCountry}">Mexico</span>
+                </div>
+
+                <span class="prediction-match-separator">vs</span>
+
+                <div class="prediction-team">
+                  <span class="prediction-flag fi" th:classappend="' fi-' + ${prediction.awayCountryCode}"></span>
+                  <span class="prediction-team-name" th:text="${prediction.awayCountry}">Canada</span>
+                </div>
+              </div>
+
+              <div class="prediction-upcoming-meta">
+                <span class="prediction-history-stage" th:text="${prediction.matchStage}">Group A</span>
+                <span class="prediction-history-meta-dot">&bull;</span>
+                <p class="prediction-match-datetime"
+                   th:with="df=#{date.format.pattern}, formattedDate=${#temporals.format(prediction.matchDateTime, df)}"
+                   th:text="${#strings.capitalize(formattedDate)}">Jun 11, 2026 - 20:00</p>
+              </div>
+
+              <div class="prediction-inline-info">
+                <span class="prediction-card-label">Your prediction</span>
+                <span class="prediction-card-value" th:text="${prediction.predictedHomeScore + ' - ' + prediction.predictedAwayScore}">3 - 0</span>
+              </div>
+            </div>
+          </a>
+
+        </section>
+      </section>
+
+      <section class="past-section">
+        <section class="past-summary-card">
+          <h2 class="section-title">Past Predictions</h2>
+          <section class="prediction-history-list">
+            <article class="prediction-history-row" th:each="prediction : ${pastPredictions}">
+              <div class="prediction-card-main">
+                <div class="prediction-history-topline">
+                  <div class="prediction-history-match-info">
+                    <div class="prediction-match-row">
+                      <div class="prediction-team">
+                        <span class="prediction-flag fi" th:classappend="' fi-' + ${prediction.homeCountryCode}"></span>
+                        <span class="prediction-team-name" th:text="${prediction.homeCountry}">Mexico</span>
+                      </div>
+
+                      <span class="prediction-match-score"
+                            th:text="${prediction.finalHomeScore + ' - ' + prediction.finalAwayScore}">2 - 1</span>
+
+                      <div class="prediction-team">
+                        <span class="prediction-flag fi" th:classappend="' fi-' + ${prediction.awayCountryCode}"></span>
+                        <span class="prediction-team-name" th:text="${prediction.awayCountry}">Canada</span>
+                      </div>
+                    </div>
+
+                    <div class="prediction-history-meta-left">
+                      <span class="prediction-history-stage" th:text="${prediction.matchStage}">Quarter-final</span>
+                      <span class="prediction-history-meta-dot">&bull;</span>
+                      <p class="prediction-match-datetime"
+                         th:with="df=#{date.format.pattern}, formattedDate=${#temporals.format(prediction.matchDateTime, df)}"
+                         th:text="${#strings.capitalize(formattedDate)}">Jun 11, 2026 - 20:00</p>
+                    </div>
+                  </div>
+
+                  <div class="prediction-history-side">
+                    <div class="prediction-history-points-stack">
+                      <span class="prediction-history-points-value" th:text="${'+' + prediction.pointsEarned + ' pts'}">+5 pts</span>
+                      <span class="prediction-history-bonus-value"
+                            th:if="${prediction.bonusPointsEarned > 0}"
+                            th:text="${'+' + prediction.bonusPointsEarned + ' team bonus'}">+2 team bonus</span>
+                    </div>
+                    <div class="prediction-history-prediction">
+                      <span class="prediction-card-label">Predicted</span>
+                      <span class="prediction-card-value" th:text="${prediction.predictedHomeScore + ' - ' + prediction.predictedAwayScore}">2 - 1</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </section>
+        </section>
+      </section>
+
+    </section>
+  </main>
+</div>
+</body>
+
+</html>

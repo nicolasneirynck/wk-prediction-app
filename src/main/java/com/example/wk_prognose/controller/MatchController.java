@@ -1,8 +1,10 @@
 package com.example.wk_prognose.controller;
 
 import com.example.wk_prognose.dto.request.InputMatchDTO;
+import com.example.wk_prognose.dto.request.InputPredictionDTO;
 import com.example.wk_prognose.dto.response.MatchDTO;
 import com.example.wk_prognose.service.MatchService;
+import com.example.wk_prognose.service.PredictionService;
 import com.example.wk_prognose.service.TeamService;
 import com.example.wk_prognose.util.MatchStatus;
 import jakarta.validation.Valid;
@@ -23,16 +25,47 @@ public class MatchController {
 
     private final MatchService matchService;
     private final TeamService teamService;
+    private final PredictionService predictionService;
 
     @GetMapping("/{id}")
     public String getMatch(@PathVariable Long id, Model model){
         MatchDTO matchDTO = matchService.findMatchById(id).orElseThrow(() ->
                 new IllegalArgumentException("No match found with this id"));
 
-        model.addAttribute("matchDTO", matchDTO);
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
+        InputPredictionDTO inputPredictionDTO = predictionService.findPredictionByMatchId(id)
+                .map(prediction -> new InputPredictionDTO(prediction.predictedHomeScore(), prediction.predictedAwayScore()))
+                .orElse(new InputPredictionDTO(null, null));
+
+        prepareMatchDetailViewData(id, model, matchDTO, inputPredictionDTO);
 
         return "match-detail";
+    }
+
+    @PostMapping("/{id}/prediction")
+    public String savePrediction(@PathVariable Long id, @Valid InputPredictionDTO inputPredictionDTO,
+                                 BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        MatchDTO matchDTO = matchService.findMatchById(id).orElseThrow(() ->
+                new IllegalArgumentException("No match found with this id"));
+        boolean predictionExists = predictionService.findPredictionByMatchId(id).isPresent();
+
+        if (result.hasErrors()) {
+            prepareMatchDetailViewData(id, model, matchDTO, inputPredictionDTO);
+            return "match-detail";
+        }
+
+        try {
+            predictionService.savePrediction(id, inputPredictionDTO);
+        } catch (IllegalArgumentException ex) {
+            prepareMatchDetailViewData(id, model, matchDTO, inputPredictionDTO);
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "match-detail";
+        }
+
+        redirectAttributes.addFlashAttribute(
+                "successMessageKey",
+                predictionExists ? "prediction.edit.success" : "prediction.add.success"
+        );
+        return "redirect:/predictions";
     }
 
     @GetMapping("/manage")
@@ -136,5 +169,16 @@ public class MatchController {
         model.addAttribute("formAction", formAction);
         model.addAttribute("submitLabel", submitLabel);
         model.addAttribute("showScoreInputs", showScoreInputs);
+    }
+
+    private void prepareMatchDetailViewData(Long matchId, Model model, MatchDTO matchDTO,
+                                            InputPredictionDTO inputPredictionDTO) {
+        boolean predictionExists = predictionService.findPredictionByMatchId(matchId).isPresent();
+
+        model.addAttribute("matchDTO", matchDTO);
+        model.addAttribute("inputPredictionDTO", inputPredictionDTO);
+        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
+        model.addAttribute("predictionFormAction", "/matches/" + matchId + "/prediction");
+        model.addAttribute("predictionSubmitLabel", predictionExists ? "Update prediction" : "Save prediction");
     }
 }

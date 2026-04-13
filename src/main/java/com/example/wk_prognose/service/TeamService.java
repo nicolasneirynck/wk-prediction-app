@@ -22,6 +22,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
+    private final PredictionService predictionService;
 
     public Optional<TeamDetailDTO> findTeamById(Long id){
         return teamRepository.findById(id).map(this::toTeamDetailDTO);
@@ -124,17 +125,22 @@ public class TeamService {
 
         User owner = team.getOwner();
         String ownerName = owner.getFirstName() + " " + owner.getLastName();
+        int memberCount = team.getUsers().size();
+        int totalScore = team.getUsers().stream()
+                .mapToInt(predictionService::calculateTotalScoreForUser)
+                .sum();
         List<TeamMemberDTO> teamMemberDTOS = team.getUsers().stream().map(user -> toTeamMemberDTO(user, owner)).toList();
 
-        return new TeamDetailDTO(team.getId(), team.getName(),ownerName, teamMemberDTOS, team.getInviteCode());
+        return new TeamDetailDTO(team.getId(), team.getName(), ownerName, memberCount, totalScore, teamMemberDTOS, team.getInviteCode());
     }
 
     private TeamMemberDTO toTeamMemberDTO(User user, User teamOwner){
 
         String displayName = user.getFirstName() + " " + user.getLastName();
+        int score = predictionService.calculateTotalScoreForUser(user);
         boolean isOwner = user.getId() == teamOwner.getId();
 
-        return new TeamMemberDTO(user.getId(), displayName, isOwner);
+        return new TeamMemberDTO(user.getId(), displayName, score, isOwner);
     }
 
     private void removeMember(Team team, User member){

@@ -3,6 +3,7 @@ package com.example.wk_prognose.controller;
 import com.example.wk_prognose.dto.request.CreateTeamDTO;
 import com.example.wk_prognose.dto.request.JoinTeamDTO;
 import com.example.wk_prognose.dto.response.TeamDetailDTO;
+import com.example.wk_prognose.service.RankingService;
 import com.example.wk_prognose.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TeamController {
 
     private final TeamService teamService;
+    private final RankingService rankingService;
 
     @GetMapping
     public String getMyTeam(Model model) {
@@ -25,7 +27,7 @@ public class TeamController {
             return "redirect:" + teamService.findMyTeamLink();
         }
 
-        model.addAttribute("myTeamLink", "/teams"); // sidenav heeft deze link nodig
+        model.addAttribute("myTeamLink", "/teams");
 
         return "team-empty";
     }
@@ -35,10 +37,20 @@ public class TeamController {
         TeamDetailDTO teamDetailDTO = teamService.findTeamById(id).orElseThrow(() ->
                 new IllegalArgumentException("No team found with this id"));
 
-        model.addAttribute("teamDetailDTO", teamDetailDTO);
         model.addAttribute("myTeamLink", teamService.findMyTeamLink());
+        model.addAttribute("teamDetailDTO", teamDetailDTO);
+        model.addAttribute("rankedMembers", rankingService.findRankedMembersForTeam(id));
+        model.addAttribute("teamTotalScore", rankingService.calculateTotalScoreForTeam(id));
 
         return "team-detail";
+    }
+
+    @GetMapping("ranking")
+    public String getTop10Teams(Model model) {
+        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
+        model.addAttribute("topTeams", rankingService.findTop10Teams());
+
+        return "top-teams";
     }
 
 

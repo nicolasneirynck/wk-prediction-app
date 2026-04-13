@@ -15,6 +15,8 @@
         <section class="content">
             <section class="page-header">
                 <h1 class="page-title" th:text="${teamDetailDTO.name}"></h1>
+                <p class="team-page-subtitle"
+                   th:text="${teamDetailDTO.memberCount + ' members • ' + teamTotalScore + ' total points'}">4 members • 31 total points</p>
 
                 <section class="invite-code-card">
                     <div class="invite-code-content">
@@ -32,46 +34,26 @@
                 </section>
             </section>
 
-<!--            <section class="team-stats">-->
-<!--                <article class="team-stat-card">-->
-<!--                    <p class="team-stat-label">Members</p>-->
-<!--                    <p class="team-stat-value" th:text="${teamDetailDTO.memberCount}">4</p>-->
-<!--                </article>-->
-
-<!--                <article class="team-stat-card">-->
-<!--                    <p class="team-stat-label">Team score</p>-->
-<!--                    <p class="team-stat-value" th:text="${teamDetailDTO.totalScore}">128</p>-->
-<!--                </article>-->
-<!--            </section>-->
-
             <section class="member-section">
                 <h2 class="section-title">Team Members</h2>
-                <section class="member-list">
-                    <article class="member-card" th:each="member : ${teamDetailDTO.members}">
-                        <div class="member-card-main">
+                <section class="member-list-card">
+                    <article class="member-row" th:each="member, rank: ${rankedMembers}">
+                        <span class="member-rank" th:text="${rank.count}">1</span>
+                        <div class="member-row-main">
                             <div class="member-info">
                                 <p class="member-name" th:text="${member.name}">Alice Johnson</p>
-                                <span class="member-owner-badge" th:if="${member.owner}">Owner</span>
+                                <div class="member-inline-actions">
+                                    <span class="member-owner-badge" th:if="${member.owner}">Owner</span>
+                                    <form th:action="@{/teams/{teamId}/members/{memberId}/remove(teamId=${teamDetailDTO.id},memberId=${member.id})}"
+                                          th:if="${!member.owner}"
+                                          method="post">
+                                        <button class="member-remove-button" type="submit">Remove</button>
+                                    </form>
+                                </div>
                             </div>
-
-<!--                            <div class="member-score">-->
-<!--                                <p class="member-meta-label">Score</p>-->
-<!--                                <p class="member-meta-value" th:text="${member.score}"></p>-->
-<!--                            </div>-->
-
-<!--                            <div class="member-ranking">-->
-<!--                                <p class="member-meta-label">Ranking</p>-->
-<!--                                <p class="member-meta-value" th:text="${member.ranking}"></p>-->
-<!--                            </div>-->
                         </div>
 
-                        <form th:action="@{/teams/{teamId}/members/{memberId}/remove(teamId=${teamDetailDTO.id},memberId=${member.id})}"
-                              th:if="${!member.owner}"
-                              method="post">
-                            <div class="member-card-actions">
-                                <button class="member-remove-button" type="submit">Remove</button>
-                            </div>
-                        </form>
+                        <span class="member-score-badge" th:text="${member.score + ' pts'}">16 pts</span>
                     </article>
                 </section>
             </section>

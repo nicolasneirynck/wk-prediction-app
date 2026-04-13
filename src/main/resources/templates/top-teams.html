@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{app.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('ranking')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('Nicolas Neirynck')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Top-10 Teams</h1>
+                <p class="page-subtitle">The highest-scoring teams across the competition.</p>
+            </section>
+
+            <section class="member-section">
+                <section class="member-list-card">
+                    <a class="member-row member-row-link"
+                       th:each="team, rank : ${topTeams}"
+                       th:href="@{/teams/{id}(id=${team.id})}">
+                        <span class="member-rank" th:text="${rank.count}">1</span>
+                        <div class="member-row-main">
+                            <div class="member-info">
+                                <p class="member-name" th:text="${team.name}">Team Belgium</p>
+                                <div class="member-inline-actions">
+                                    <span class="member-owner-badge" th:text="${team.memberCount + ' members'}">4 members</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="member-score-badge" th:text="${team.totalScore + ' pts'}">31 pts</span>
+                    </a>
+                </section>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

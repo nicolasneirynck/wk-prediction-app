@@ -59,6 +59,47 @@
               <span class="match-detail-meta-value" th:text="${matchDTO.stadiumName + ', ' + matchDTO.city + ', ' + matchDTO.hostCountry}">Estadio Azteca, Mexico City, MEXICO</span>
             </div>
           </div>
+
+          <div class="success-message match-detail-success" th:if="${successMessageKey}" th:text="#{${successMessageKey}}"></div>
+
+          <form class="match-prediction-form" th:object="${inputPredictionDTO}" th:action="${predictionFormAction}" method="post">
+            <p class="match-prediction-subtitle">Your prediction</p>
+
+            <div class="match-prediction-scoreboard">
+              <div class="match-prediction-team">
+                <label class="match-prediction-label" for="predictedHomeScore" th:text="${matchDTO.homeCountry}">Mexico</label>
+                <input class="match-prediction-input"
+                       id="predictedHomeScore"
+                       type="number"
+                       min="0"
+                       inputmode="numeric"
+                       th:field="*{predictedHomeScore}">
+                <span class="match-prediction-field-error"
+                      th:if="${#fields.hasErrors('predictedHomeScore')}"
+                      th:errors="*{predictedHomeScore}"></span>
+              </div>
+
+              <span class="match-prediction-separator">-</span>
+
+              <div class="match-prediction-team">
+                <label class="match-prediction-label" for="predictedAwayScore" th:text="${matchDTO.awayCountry}">Canada</label>
+                <input class="match-prediction-input"
+                       id="predictedAwayScore"
+                       type="number"
+                       min="0"
+                       inputmode="numeric"
+                       th:field="*{predictedAwayScore}">
+                <span class="match-prediction-field-error"
+                      th:if="${#fields.hasErrors('predictedAwayScore')}"
+                      th:errors="*{predictedAwayScore}"></span>
+              </div>
+            </div>
+
+            <div class="match-prediction-actions">
+              <p class="match-prediction-error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+              <button class="match-prediction-save" type="submit" th:text="${predictionSubmitLabel}">Save prediction</button>
+            </div>
+          </form>
         </section>
       </section>
     </section>
