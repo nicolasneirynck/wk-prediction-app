@@ -12,13 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     private final MatchService matchService;
-    private final TeamService teamService;
 
     @GetMapping("/home")
     public String showHomePage(Model model){
         model.addAttribute("matches", matchService.findAllMatches());
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
-
         return "home";
     }
 

@@ -18,13 +18,20 @@
                 <p class="team-page-subtitle"
                    th:text="${teamDetailDTO.memberCount + ' members • ' + teamTotalScore + ' total points'}">4 members • 31 total points</p>
 
+                <div class="success-message team-detail-message"
+                     th:if="${successMessageKey}"
+                     th:text="#{${successMessageKey}}"></div>
+                <div class="error-message team-detail-message"
+                     th:if="${errorMessage}"
+                     th:text="${errorMessage}"></div>
+
                 <section class="invite-code-card">
                     <div class="invite-code-content">
                         <p class="invite-code-label">Invite Code</p>
                         <p class="team-invite-code" th:text="${teamDetailDTO.inviteCode}">GOAL2026</p>
                     </div>
 
-                    <div class="invite-code-actions">
+                    <div class="invite-code-actions" th:if="${teamDetailDTO.currentUserOwner}">
                         <form th:action="@{/teams/{id}/regenerate-invite-code(id=${teamDetailDTO.id})}" method="post">
                             <button class="invite-code-regenerate-button" type="submit" aria-label="Regenerate invite code">
                                 Regenerate

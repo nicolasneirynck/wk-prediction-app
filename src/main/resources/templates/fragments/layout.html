@@ -1,43 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
-<aside class="sidebar" th:fragment="sidebar(activePage)">
-    <nav class="sidebar-nav">
-        <ul class="sidebar-menu">
-            <li class="sidebar-item">
-                <a class="sidebar-link"
-                   th:classappend="${activePage == 'home'} ? ' sidebar-link-active' : ''"
-                   th:href="@{/}">Home</a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link"
-                   th:classappend="${activePage == 'team'} ? ' sidebar-link-active' : ''"
-                   th:href="@{${myTeamLink}}">My Team</a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link"
-                   th:classappend="${activePage == 'predictions'} ? ' sidebar-link-active' : ''"
-                   th:href="@{/predictions}">Predictions</a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link"
-                   th:classappend="${activePage == 'ranking'} ? ' sidebar-link-active' : ''"
-                   th:href="@{/teams/ranking}">Top-10 Teams</a>
-            </li>
-            <li class="sidebar-section-label">Admin</li>
-            <li class="sidebar-item">
-                <a class="sidebar-link"
-                   th:classappend="${activePage == 'manage-matches'} ? ' sidebar-link-active' : ''"
-                   th:href="@{/matches/manage}">Manage Matches</a>
-            </li>
-        </ul>
-    </nav>
-</aside>
+    <header class="topbar" th:fragment="topbar(username)">
+        <div class="topbar-user">
+            <span sec:authorize="isAuthenticated()" class="topbar-username" th:text="${currentUserDisplayName}"></span>
+            <a sec:authorize="isAnonymous()" class="topbar-auth-link" th:href="@{/login}">Login / Register</a>
+        </div>
+    </header>
 
-<header class="topbar" th:fragment="topbar(username)">
-    <div class="topbar-user">
-        <span class="topbar-username" th:text="${username}">Nicolas Neirynck</span>
-    </div>
-</header>
+    <aside class="sidebar" th:fragment="sidebar(activePage)">
+        <nav class="sidebar-nav">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a class="sidebar-link"
+                       th:classappend="${activePage == 'home'} ? ' sidebar-link-active' : ''"
+                       th:href="@{/}">Home</a>
+                </li>
+                <li class="sidebar-item" sec:authorize="isAuthenticated()">
+                    <a class="sidebar-link"
+                       th:classappend="${activePage == 'team'} ? ' sidebar-link-active' : ''"
+                       th:href="@{${myTeamLink}}">My Team</a>
+                </li>
+                <li class="sidebar-item" sec:authorize="isAuthenticated()">
+                    <a class="sidebar-link"
+                       th:classappend="${activePage == 'predictions'} ? ' sidebar-link-active' : ''"
+                       th:href="@{/predictions}">Predictions</a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link"
+                       th:classappend="${activePage == 'ranking'} ? ' sidebar-link-active' : ''"
+                       th:href="@{/teams/ranking}">Top-10 Teams</a>
+                </li>
+                <li class="sidebar-section-label" sec:authorize="hasRole('ADMIN')">Admin</li>
+                <li class="sidebar-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="sidebar-link"
+                       th:classappend="${activePage == 'manage-matches'} ? ' sidebar-link-active' : ''"
+                       th:href="@{/matches/manage}">Manage Matches</a>
+                </li>
+            </ul>
+            <div class="sidebar-auth">
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <button type="submit" class="sidebar-link sidebar-logout-button">Logout</button>
+                </form>
+            </div>
+        </nav>
+    </aside>
 </body>
 </html>

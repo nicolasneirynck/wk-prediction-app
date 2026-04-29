@@ -21,9 +21,14 @@ public class User {
 
     private String firstName;
     private String lastName;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -36,6 +41,19 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Prediction> predictions;
+
+    public User(String firstName, String lastName, String email, String password, Role role){
+        // TODO -> error handling + miss builder?
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public String getDisplayName(){
+        return firstName + " " + lastName;
+    }
 
     public void removeTeam(){
         this.team = null;

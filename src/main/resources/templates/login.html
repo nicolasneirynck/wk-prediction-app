@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('login')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Login</h1>
+                <p class="page-subtitle">Sign in to make your World Cup predictions.</p>
+            </section>
+
+            <section class="team-form-card">
+                <form class="team-form" th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="username">Email</label>
+                        <input class="form-input" type="text" id="username" name="username" placeholder="you@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input class="form-input" type="password" id="password" name="password" placeholder="Enter your password">
+                    </div>
+
+                    <div class="form-actions form-actions-between">
+                        <button class="form-button" type="submit">Login</button>
+                        <a class="form-secondary-link" th:href="@{/register}">No account yet?</a>
+                    </div>
+                </form>
+
+                <div class="dev-login">
+                    <p class="dev-login-label">Dev quick login</p>
+                    <div class="dev-login-actions">
+                        <form th:action="@{/login}" method="post">
+                            <input type="hidden" name="username" value="test@mail.com">
+                            <input type="hidden" name="password" value="password">
+                            <button class="dev-login-button" type="submit">Login as user</button>
+                        </form>
+
+                        <form th:action="@{/login}" method="post">
+                            <input type="hidden" name="username" value="noteam@mail.com">
+                            <input type="hidden" name="password" value="password">
+                            <button class="dev-login-button dev-login-button-no-team" type="submit">Login as user without team</button>
+                        </form>
+
+                        <form th:action="@{/login}" method="post">
+                            <input type="hidden" name="username" value="admin@mail.com">
+                            <input type="hidden" name="password" value="password">
+                            <button class="dev-login-button dev-login-button-admin" type="submit">Login as admin</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

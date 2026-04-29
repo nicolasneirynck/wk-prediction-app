@@ -124,14 +124,16 @@ public class TeamService {
     private TeamDetailDTO toTeamDetailDTO(Team team){
 
         User owner = team.getOwner();
+        User currentUser = currentUserService.getCurrentUser().orElseThrow(() -> new IllegalStateException("Current user not found"));
         String ownerName = owner.getFirstName() + " " + owner.getLastName();
         int memberCount = team.getUsers().size();
         int totalScore = team.getUsers().stream()
                 .mapToInt(predictionService::calculateTotalScoreForUser)
                 .sum();
         List<TeamMemberDTO> teamMemberDTOS = team.getUsers().stream().map(user -> toTeamMemberDTO(user, owner)).toList();
+        boolean currentUserOwner = currentUser.getId() == owner.getId();
 
-        return new TeamDetailDTO(team.getId(), team.getName(), ownerName, memberCount, totalScore, teamMemberDTOS, team.getInviteCode());
+        return new TeamDetailDTO(team.getId(), team.getName(), ownerName, memberCount, totalScore, teamMemberDTOS, team.getInviteCode(), currentUserOwner);
     }
 
     private TeamMemberDTO toTeamMemberDTO(User user, User teamOwner){

@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MatchController {
 
     private final MatchService matchService;
-    private final TeamService teamService;
     private final PredictionService predictionService;
 
     @GetMapping("/{id}")
@@ -71,7 +70,6 @@ public class MatchController {
     @GetMapping("/manage")
     public String showManageMatches(InputMatchDTO inputMatchDTO, Model model){
         model.addAttribute("matches", matchService.findAllMatches());
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
         model.addAttribute("inputMatchDTO", inputMatchDTO);
 
         return "manage-matches";
@@ -165,7 +163,6 @@ public class MatchController {
                                           String submitLabel, boolean showScoreInputs) {
         model.addAttribute("inputMatchDTO", inputMatchDTO);
         model.addAttribute("locations", matchService.findAllLocations());
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
         model.addAttribute("formAction", formAction);
         model.addAttribute("submitLabel", submitLabel);
         model.addAttribute("showScoreInputs", showScoreInputs);
@@ -177,7 +174,6 @@ public class MatchController {
 
         model.addAttribute("matchDTO", matchDTO);
         model.addAttribute("inputPredictionDTO", inputPredictionDTO);
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
         model.addAttribute("predictionFormAction", "/matches/" + matchId + "/prediction");
         model.addAttribute("predictionSubmitLabel", predictionExists ? "Update prediction" : "Save prediction");
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/teams")
@@ -26,9 +27,6 @@ public class TeamController {
         if (teamService.currentUserHasTeam()) {
             return "redirect:" + teamService.findMyTeamLink();
         }
-
-        model.addAttribute("myTeamLink", "/teams");
-
         return "team-empty";
     }
 
@@ -37,7 +35,6 @@ public class TeamController {
         TeamDetailDTO teamDetailDTO = teamService.findTeamById(id).orElseThrow(() ->
                 new IllegalArgumentException("No team found with this id"));
 
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
         model.addAttribute("teamDetailDTO", teamDetailDTO);
         model.addAttribute("rankedMembers", rankingService.findRankedMembersForTeam(id));
         model.addAttribute("teamTotalScore", rankingService.calculateTotalScoreForTeam(id));
@@ -47,7 +44,6 @@ public class TeamController {
 
     @GetMapping("ranking")
     public String getTop10Teams(Model model) {
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
         model.addAttribute("topTeams", rankingService.findTop10Teams());
 
         return "top-teams";
@@ -56,7 +52,6 @@ public class TeamController {
 
     @GetMapping("create")
     public String showCreateTeamForm(CreateTeamDTO createTeamDTO, Model model){
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
 
         return "create-team";
     }
@@ -69,7 +64,6 @@ public class TeamController {
         try{
             teamService.createTeam(createTeamDTO);
         } catch (IllegalArgumentException ex){
-            model.addAttribute("myTeamLink", teamService.findMyTeamLink());
             return "create-team";
         }
 
@@ -80,8 +74,6 @@ public class TeamController {
     @GetMapping("join")
     public String showJoinTeamForm(JoinTeamDTO joinTeamDTO, Model model){
 
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
-
         return "join-team";
     }
 
@@ -91,7 +83,6 @@ public class TeamController {
             // TODO validatie (lang genoeg?)
             teamService.joinTeam(joinTeamDTO);
         } catch (IllegalArgumentException ex){
-            model.addAttribute("myTeamLink", teamService.findMyTeamLink());
             // TODO exception handling (code bestaat niet?)
             return "join-team";
         }
@@ -100,8 +91,12 @@ public class TeamController {
     }
 
     @PostMapping("{id}/regenerate-invite-code")
-    public String regenerateInviteCode(@PathVariable Long id){
-        teamService.regenerateInviteCode(id);
+    public String regenerateInviteCode(@PathVariable Long id, RedirectAttributes redirectAttributes){
+        try {
+            teamService.regenerateInviteCode(id);
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        }
 
         return "redirect:/teams/" + id;
     }

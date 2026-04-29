@@ -22,15 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PredictionController {
 
     private final PredictionService predictionService;
-    private final TeamService teamService;
-    private final MatchService matchService;
 
     @GetMapping()
     public String showPredictions(Model model){
         model.addAttribute("upcomingPredictions", predictionService.findUpcomingPredictionsForCurrentUser());
         model.addAttribute("pastPredictions", predictionService.findPastPredictionsForCurrentUser());
         model.addAttribute("totalPoints", predictionService.calculateTotalScoreForCurrentUser());
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
 
         return "predictions";
     }
@@ -106,7 +103,6 @@ public class PredictionController {
                                                String submitLabel){
 
         model.addAttribute("inputPredictionDTO", inputPredictionDTO);
-        model.addAttribute("myTeamLink", teamService.findMyTeamLink());
         model.addAttribute("formAction", formAction);
         model.addAttribute("submitLabel", submitLabel);
     }
