@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ValidMatchDateRange {
 
-    String message() default "Match date must be between 11 June 2026 and 19 July 2026.";
+    String message() default "{validation.match.dateRange}";
 
     Class<?>[] groups() default {};
 

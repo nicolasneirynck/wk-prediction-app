@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title th:text="#{login.title}">Login</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -14,47 +14,47 @@
 
         <section class="content">
             <section class="page-header">
-                <h1 class="page-title">Login</h1>
-                <p class="page-subtitle">Sign in to make your World Cup predictions.</p>
+                <h1 class="page-title" th:text="#{login.title}">Login</h1>
+                <p class="page-subtitle" th:text="#{login.subtitle}">Sign in to make your World Cup predictions.</p>
             </section>
 
             <section class="team-form-card">
                 <form class="team-form" th:action="@{/login}" method="post">
                     <div class="form-group">
-                        <label class="form-label" for="username">Email</label>
-                        <input class="form-input" type="text" id="username" name="username" placeholder="you@example.com">
+                        <label class="form-label" for="username" th:text="#{login.email.label}">Email</label>
+                        <input class="form-input" type="text" id="username" name="username" th:placeholder="#{login.email.placeholder}">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="password">Password</label>
-                        <input class="form-input" type="password" id="password" name="password" placeholder="Enter your password">
+                        <label class="form-label" for="password" th:text="#{login.password.label}">Password</label>
+                        <input class="form-input" type="password" id="password" name="password" th:placeholder="#{login.password.placeholder}">
                     </div>
 
                     <div class="form-actions form-actions-between">
-                        <button class="form-button" type="submit">Login</button>
-                        <a class="form-secondary-link" th:href="@{/register}">No account yet?</a>
+                        <button class="form-button" type="submit" th:text="#{login.submit}">Login</button>
+                        <a class="form-secondary-link" th:href="@{/register}" th:text="#{login.register.link}">No account yet?</a>
                     </div>
                 </form>
 
                 <div class="dev-login">
-                    <p class="dev-login-label">Dev quick login</p>
+                    <p class="dev-login-label" th:text="#{login.dev.label}">Dev quick login</p>
                     <div class="dev-login-actions">
                         <form th:action="@{/login}" method="post">
                             <input type="hidden" name="username" value="test@mail.com">
                             <input type="hidden" name="password" value="password">
-                            <button class="dev-login-button" type="submit">Login as user</button>
+                            <button class="dev-login-button" type="submit" th:text="#{login.dev.user}">Login as user</button>
                         </form>
 
                         <form th:action="@{/login}" method="post">
                             <input type="hidden" name="username" value="noteam@mail.com">
                             <input type="hidden" name="password" value="password">
-                            <button class="dev-login-button dev-login-button-no-team" type="submit">Login as user without team</button>
+                            <button class="dev-login-button dev-login-button-no-team" type="submit" th:text="#{login.dev.userWithoutTeam}">Login as user without team</button>
                         </form>
 
                         <form th:action="@{/login}" method="post">
                             <input type="hidden" name="username" value="admin@mail.com">
                             <input type="hidden" name="password" value="password">
-                            <button class="dev-login-button dev-login-button-admin" type="submit">Login as admin</button>
+                            <button class="dev-login-button dev-login-button-admin" type="submit" th:text="#{login.dev.admin}">Login as admin</button>
                         </form>
                     </div>
                 </div>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Denied</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Access denied</h1>
+                <p class="page-subtitle">You do not have permission to view this page.</p>
+            </section>
+
+            <a class="form-secondary-link" th:href="@{/}">Back to home</a>
+        </section>
+    </main>
+</div>
+</body>
+</html>

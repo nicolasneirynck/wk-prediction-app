@@ -1,10 +1,13 @@
 package com.example.wk_prognose.advice;
 
+import com.example.wk_prognose.exception.TeamNotFoundException;
 import com.example.wk_prognose.model.User;
 import com.example.wk_prognose.service.CurrentUserService;
 import com.example.wk_prognose.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
@@ -26,5 +29,13 @@ public class GlobalControllerAdvice {
         return currentUserService.getCurrentUser().isPresent()
                 ? teamService.findMyTeamLink()
                 : "/teams";
+    }
+
+    @ExceptionHandler(TeamNotFoundException.class)
+    public String handleTeamNotFound(TeamNotFoundException ex, Model model) {
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("currentUserDisplayName", populateUsername());
+        model.addAttribute("myTeamLink", populateMyTeamLink());
+        return "error/team-not-found";
     }
 }

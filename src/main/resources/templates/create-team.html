@@ -24,6 +24,9 @@
                     <div class="form-group">
                         <label class="form-label" for="name">Team name</label>
                         <input class="form-input" th:field="*{name}" id="name" type="text" placeholder="Enter your team name">
+                        <span th:if="${#fields.hasErrors('name')}"
+                              th:errorclass="error"
+                              th:errors="*{name}"></span>
                     </div>
 
                     <div class="form-actions">

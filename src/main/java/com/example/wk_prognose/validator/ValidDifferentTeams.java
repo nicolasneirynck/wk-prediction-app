@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ValidDifferentTeams {
 
-    String message() default "Choose 2 different teams!";
+    String message() default "{validation.match.differentTeams}";
 
     Class<?>[] groups() default {};
 

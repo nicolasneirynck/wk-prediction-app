@@ -3,11 +3,14 @@ package com.example.wk_prognose.controller;
 import com.example.wk_prognose.dto.request.CreateTeamDTO;
 import com.example.wk_prognose.dto.request.JoinTeamDTO;
 import com.example.wk_prognose.dto.response.TeamDetailDTO;
+import com.example.wk_prognose.exception.TeamNotFoundException;
 import com.example.wk_prognose.service.RankingService;
 import com.example.wk_prognose.service.TeamService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +36,7 @@ public class TeamController {
     @GetMapping("{id}")
     public String getTeam(@PathVariable Long id, Model model){
         TeamDetailDTO teamDetailDTO = teamService.findTeamById(id).orElseThrow(() ->
-                new IllegalArgumentException("No team found with this id"));
+                new TeamNotFoundException("No team found with this id"));
 
         model.addAttribute("teamDetailDTO", teamDetailDTO);
         model.addAttribute("rankedMembers", rankingService.findRankedMembersForTeam(id));
@@ -57,7 +60,11 @@ public class TeamController {
     }
 
     @PostMapping("create")
-    public String createTeam(CreateTeamDTO createTeamDTO, Model model){
+    public String createTeam(@Valid CreateTeamDTO createTeamDTO, BindingResult result, Model model){
+
+        if (result.hasErrors()) {
+            return "create-team";
+        }
 
         //TODO validatie (teamnaam te kort ofzo of bestaat al)
         // TODO exception handling (teamnaam bestaat al, ge hebt al een team,..)
@@ -78,7 +85,11 @@ public class TeamController {
     }
 
     @PostMapping("join")
-    public String joinTeam(JoinTeamDTO joinTeamDTO, Model model){
+    public String joinTeam(@Valid JoinTeamDTO joinTeamDTO, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            return "join-team";
+        }
+
         try{
             // TODO validatie (lang genoeg?)
             teamService.joinTeam(joinTeamDTO);

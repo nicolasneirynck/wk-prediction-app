@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Not Found</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" th:replace="~{fragments/layout :: sidebar('')}"></aside>
+
+    <main class="page">
+        <header class="topbar" th:replace="~{fragments/layout :: topbar('')}"></header>
+
+        <section class="content">
+            <section class="page-header">
+                <h1 class="page-title">Team not found</h1>
+                <p class="page-subtitle" th:text="${message}">This team could not be found.</p>
+            </section>
+
+            <a class="form-secondary-link" th:href="@{/teams}">Back to teams</a>
+        </section>
+    </main>
+</div>
+</body>
+</html>

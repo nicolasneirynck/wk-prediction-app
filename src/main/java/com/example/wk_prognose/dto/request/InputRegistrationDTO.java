@@ -4,13 +4,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record InputRegistrationDTO(
-        @NotBlank
+        @NotBlank(message = "{validation.registration.firstName.required}")
         String firstName,
-        @NotBlank
+
+        @NotBlank(message = "{validation.registration.lastName.required}")
         String lastName,
-        @NotBlank
-        @Email
+
+        @NotBlank(message = "{validation.registration.email.required}")
+        @Email(message = "{validation.registration.email.invalid}")
         String email,
-        @NotBlank
+
+        @NotBlank(message = "{validation.registration.password.required}")
         String password
 ){}

@@ -1,4 +1,8 @@
 package com.example.wk_prognose.dto.request;
 
-public record JoinTeamDTO(String inviteCode) {
+import jakarta.validation.constraints.NotBlank;
+
+public record JoinTeamDTO(
+        @NotBlank(message = "{validation.team.inviteCode.required}")
+        String inviteCode) {
 }

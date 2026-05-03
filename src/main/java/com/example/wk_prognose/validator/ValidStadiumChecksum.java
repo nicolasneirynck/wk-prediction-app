@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ValidStadiumChecksum {
 
-    String message() default "Checksum must match stadium code % 97";
+    String message() default "{validation.match.stadiumChecksum}";
 
     Class<?>[] groups() default {};
 

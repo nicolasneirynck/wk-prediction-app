@@ -19,34 +19,34 @@ import java.time.LocalDateTime;
 public record InputMatchDTO(
         Long id,
 
-        @NotNull
+        @NotNull(message = "{validation.match.homeCountry.required}")
         Country homeCountry,
 
-        @NotNull
+        @NotNull(message = "{validation.match.awayCountry.required}")
         Country awayCountry,
 
-        @NotNull
+        @NotNull(message = "{validation.match.matchDateTime.required}")
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime matchDateTime,
 
-        @NotNull
-        @Min(1)
+        @NotNull(message = "{validation.match.locationId.required}")
+        @Min(value = 1, message = "{validation.match.locationId.min}")
         Long locationId,
 
-        @NotNull
-        @Min(1)
+        @NotNull(message = "{validation.match.stadiumCode.required}")
+        @Min(value = 1, message = "{validation.match.stadiumCode.min}")
         Integer stadiumCode,
 
-        @NotNull
-        @Min(0)
+        @NotNull(message = "{validation.match.checksum.required}")
+        @Min(value = 0, message = "{validation.match.checksum.min}")
         Integer checksum,
 
-        @NotNull
+        @NotNull(message = "{validation.match.matchStage.required}")
         MatchStage matchStage,
 
-        @Min(0)
+        @Min(value = 0, message = "{validation.match.homeScore.min}")
         Integer homeScore,
 
-        @Min(0)
+        @Min(value = 0, message = "{validation.match.awayScore.min}")
         Integer awayScore) {
 }

@@ -23,6 +23,9 @@
                     <div class="form-group">
                         <label class="form-label" for="inviteCode">Invite code</label>
                         <input class="form-input" th:field="*{inviteCode}" type="text" id="inviteCode" placeholder="Enter invite code">
+                        <span th:if="${#fields.hasErrors('inviteCode')}"
+                              th:errorclass="error"
+                              th:errors="*{inviteCode}"></span>
                         <p class="form-help">Ask your team owner for the invite code.</p>
                     </div>
 

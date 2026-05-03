@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ValidUniqueMatchSlot {
 
-    String message() default "A match already exists for this location at the selected date and time.";
+    String message() default "{validation.match.uniqueSlot}";
 
     Class<?>[] groups() default {};
 
