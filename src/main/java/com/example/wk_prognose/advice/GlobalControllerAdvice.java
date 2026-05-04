@@ -20,7 +20,7 @@ public class GlobalControllerAdvice {
     @ModelAttribute("currentUserDisplayName")
     public String populateUsername() {
         return currentUserService.getCurrentUser()
-                .map(User::getDisplayName)
+                .map(user -> "%s (%s)".formatted(user.getDisplayName(), user.getRole().name()))
                 .orElse("");
     }
 
